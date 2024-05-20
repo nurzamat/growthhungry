@@ -1,4 +1,5 @@
 import java.io.*;
+import java.nio.file.Path;
 import java.util.*;
 
 public class Compressor {
@@ -112,6 +113,28 @@ public class Compressor {
             }
             catch (Exception e){
                 e.printStackTrace();
+            }
+        }
+    }
+
+    //If we find a discrepancy, we return the byte position of the mismatch. Otherwise, the files are identical and the method returns -1L.
+    public static long filesCompareByByte(Path path1, Path path2) throws IOException {
+        try (BufferedInputStream fis1 = new BufferedInputStream(new FileInputStream(path1.toFile()));
+             BufferedInputStream fis2 = new BufferedInputStream(new FileInputStream(path2.toFile()))) {
+
+            int ch = 0;
+            long pos = 1;
+            while ((ch = fis1.read()) != -1) {
+                if (ch != fis2.read()) {
+                    return pos;
+                }
+                pos++;
+            }
+            if (fis2.read() == -1) {
+                return -1;
+            }
+            else {
+                return pos;
             }
         }
     }

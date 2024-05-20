@@ -12,5 +12,11 @@ public class Main {
 
         Compressor.compress(inputPath, compressPath);
         Compressor.decompress(compressPath, readablePath);
+        //compare 2 files
+        try {
+            Compressor.filesCompareByByte(Path.of(compressPath), Path.of(readablePath));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
